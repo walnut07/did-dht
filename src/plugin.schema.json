@@ -1,45 +1,77 @@
 {
-  "IMyAgentPlugin": {
+  "IDIDDHTPlugin": {
     "components": {
       "schemas": {
-        "IMyAgentPluginFooArgs": {
+        "ICreateDHTIdentifierArgs": {
+          "type": "object",
+          "properties": {
+            "networkName": {
+              "type": "string",
+              "description": "Network name for DHT DID, e.g., \"example-network\"."
+            }
+          },
+          "required": ["networkName"],
+          "description": "Arguments for  {@link  DIDDHTPlugin.createDHTIdentifier  }"
+        },
+        "ICreateDHTIdentifierResult": {
           "type": "object",
           "properties": {
             "did": {
               "type": "string",
-              "description": "Decentralized identifier"
+              "description": "The generated DID identifier."
             },
-            "bar": {
+            "controllerKeyId": {
               "type": "string",
-              "description": "Lorem ipsum"
+              "description": "Identifier of the controller key for this DID."
             },
-            "foo": {
-              "type": "string",
-              "description": "Dolorem"
+            "keys": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "kid": {
+                    "type": "string"
+                  },
+                  "publicKeyHex": {
+                    "type": "string"
+                  }
+                },
+                "required": ["kid", "publicKeyHex"]
+              },
+              "description": "Array of keys associated with the DID."
+            },
+            "services": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string"
+                  },
+                  "serviceEndpoint": {
+                    "type": "string"
+                  }
+                },
+                "required": ["id", "type", "serviceEndpoint"]
+              },
+              "description": "Array of services associated with the DID."
             }
           },
-          "required": ["did", "bar", "foo"],
-          "description": "Arguments needed for  {@link  MyAgentPlugin.myPluginFoo  } \nTo be able to export a plugin schema, your plugin methods should use an `args` parameter of a named type or interface."
-        },
-        "IMyAgentPluginFooResult": {
-          "type": "object",
-          "properties": {
-            "foobar": {
-              "type": "string"
-            },
-            "baz": {}
-          },
-          "description": "Result of  {@link  MyAgentPlugin.myPluginFoo  } \nTo be able to export a plugin schema, your plugin return types need to be Promises of a named type or interface."
+          "required": ["did", "controllerKeyId", "keys"],
+          "description": "Result of creating a DHT identifier."
         }
       },
       "methods": {
-        "myPluginFoo": {
-          "description": "Your plugin method description",
+        "createDHTIdentifier": {
+          "description": "Creates a new DHT-based DID identifier.",
           "arguments": {
-            "$ref": "#/components/schemas/IMyAgentPluginFooArgs"
+            "$ref": "#/components/schemas/ICreateDHTIdentifierArgs"
           },
           "returnType": {
-            "$ref": "#/components/schemas/IMyAgentPluginFooResult"
+            "$ref": "#/components/schemas/ICreateDHTIdentifierResult"
           }
         }
       }

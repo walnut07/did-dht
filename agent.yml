@@ -1,10 +1,3 @@
-##
-## This is an example configuration that uses the plugin and customizations from this template
-## alongside other default plugins to create an agent using `@veramo/cli`.
-##
-## Look for the `__TEMPLATE__: ` prefix in comments to see where things fit
-##
-
 version: 3.0
 
 constants:
@@ -12,7 +5,7 @@ constants:
   port: 3335
 # please use your own X25519 key, this is only an example
   secretKey: 29739248cad1bd1a0fc4d9b75cd4d2990de535baf5caadfdf8d8f86664aa830c
-  databaseFile: ./database.sqlite
+  databaseFile: ':memory:'
   methods:
     # This is the list of methods that may be executed on this agent.
     # Methods that are NOT listed here cannot be executed, even if the plugins that implement them are installed.
@@ -66,8 +59,7 @@ constants:
     - createSelectiveDisclosureRequest
     - getVerifiableCredentialsForSdr
     - validatePresentationAgainstSdr
-    # __TEMPLATE__: add your plugin methods here too. This assumes that your plugin is added to the agent. See below, toward the end of this config file.
-    - myPluginFoo
+    - createDHTIdentifier
 
 # Database
 dbConnection:
@@ -231,13 +223,16 @@ didManager:
         $require: '@veramo/data-store#DIDStore' # __TEMPLATE__: or you can use './build#MyDIDStore'
         $args:
           - $ref: /dbConnection
-      defaultProvider: did:ethr:sepolia
+      defaultProvider: did:dht:example-network
       providers:
-        # __TEMPLATE__: you can install your customized DID provider like so
-        did:my:
-          $require: ./build/index.js#MyIdentifierProvider
+        did:dht:example-network:
+          $require: ./build/index.js#DHTDIDProvider
           $args:
             - defaultKms: local
+              networks:
+                - networkName: example-network
+                  dhtInstance:
+                    $require: 'bittorrent-dht'
         did:ethr:
           $require: '@veramo/did-provider-ethr#EthrDIDProvider'
           $args:
@@ -263,20 +258,35 @@ didManager:
 agent:
   $require: '@veramo/core#Agent'
   $args:
-    - schemaValidation: false
-      plugins:
-        - $ref: /keyManager
-        - $ref: /didManager
-        - $ref: /didResolver
-        - $ref: /messageHandler
-        - $require: '@veramo/did-comm#DIDComm'
-        - $require: '@veramo/credential-w3c#CredentialIssuer'
-        - $require: '@veramo/selective-disclosure#SelectiveDisclosure'
-        - $require: '@veramo/data-store#DataStore'
+    - plugins:
+        - $require: '@veramo/key-manager#KeyManager'
           $args:
-            - $ref: /dbConnection
-        - $require: '@veramo/data-store#DataStoreORM'
+            - store: 
+                $require: '@veramo/data-store#KeyStore'
+                $args:
+                  - $ref: /dbConnection
+              kms:
+                local: 
+                  $require: '@veramo/kms-local#KeyManagementSystem'
+                  $args:
+                    - $require: '@veramo/data-store#PrivateKeyStore'
+                      $args:
+                        - $ref: /dbConnection
+                        - $require: '@veramo/kms-local#SecretBox'
+                          $args:
+                            - $ref: /constants/secretKey
+        - $require: '@veramo/did-manager#DIDManager'
           $args:
-            - $ref: /dbConnection
-          # __TEMPLATE__: install your plugin on the `@veramo/cli` agent
-        - $require: ./build/index.js#MyAgentPlugin
+            - store:
+                $require: '@veramo/data-store#DIDStore'
+                $args:
+                  - $ref: /dbConnection
+              defaultProvider: did:dht:example-network
+              providers:
+                did:dht:example-network:
+                  $require: './src/utils/dhtInstanceFactory.js#createDHTInstance'
+                  $args:
+                    - defaultKms: local
+        - $require: './build/index.js#DIDDHTPlugin'
+          $args:
+            - defaultKms: local

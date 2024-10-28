@@ -24,6 +24,7 @@ export interface DHTNetworkConfiguration {
 
 /**
  * {@link @veramo/did-manager#DIDManager} provider for `did:dht` identifiers
+ * @beta
  */
 export class DHTDIDProvider extends AbstractIdentifierProvider {
   private defaultKms: string;
