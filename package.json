@@ -44,6 +44,5 @@
   "dependencies": {
     "@veramo/core-types": "^5.1.2",
     "@veramo/did-manager": "^5.1.2",
-    "@veramo/key-manager": "^5.1.2"
-  }
+    "@veramo/key-manager": "^5.1.2"  }
 }
