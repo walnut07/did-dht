@@ -1,8 +1,9 @@
 {
-  "name": "veramo-plugin-template",
-  "version": "1.0.0",
+  "name": "dht-did",
+  "version": "0.0.1",
   "source": "src/index.ts",
   "main": "build/index.js",
+  "description": "DHT-based DID provider for Veramo",
   "types": "build/index.d.ts",
   "type": "module",
   "veramo": {
@@ -18,15 +19,18 @@
     "test:ci": "yarn test --coverage=true",
     "test": "cross-env NODE_OPTIONS=\"--experimental-vm-modules\" jest",
     "test:watch": "yarn test --watch --verbose",
-    "clean": "rm -rf tmp && rm database.sqlite && rm -rf build && rm tsconfig.tsbuildinfo"
+    "clean": "rm -rf tmp && rm database.sqlite && rm -rf build && rm tsconfig.tsbuildinfo",
+    "format": "prettier --write 'src/**/*.{js,ts,json,md}'"
   },
   "license": "MIT",
   "devDependencies": {
     "@jest/globals": "^29.4.3",
     "@types/jest": "29.5.12",
     "@veramo/cli": "^5.1.2",
+    "bittorrent-dht": "^11.0.8",
     "cross-env": "^7.0.3",
     "jest": "29.7.0",
+    "prettier": "^3.3.3",
     "ts-jest": "29.1.2",
     "typescript": "5.4.3"
   },

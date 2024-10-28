@@ -1,5 +1,5 @@
-import { IIdentifier } from '@veramo/core-types'
-import { AbstractDIDStore } from '@veramo/did-manager'
+import { IIdentifier } from '@veramo/core-types';
+import { AbstractDIDStore } from '@veramo/did-manager';
 
 /**
  * This type of class allows you to define your own storage for the DIDs that a Veramo agent manages.
@@ -15,20 +15,19 @@ import { AbstractDIDStore } from '@veramo/did-manager'
  * @alpha
  */
 export class MyDIDStore extends AbstractDIDStore {
-
   importDID(args: IIdentifier): Promise<boolean> {
-    throw new Error("not_implemented: importDID")
+    throw new Error('not_implemented: importDID');
   }
 
   getDID(args: { did: string } | { alias: string; provider: string }): Promise<IIdentifier> {
-    throw new Error("not_implemented: getDID")
+    throw new Error('not_implemented: getDID');
   }
 
   async deleteDID(args: { did: string }): Promise<boolean> {
-    throw new Error("not_implemented: deleteDID")
+    throw new Error('not_implemented: deleteDID');
   }
 
   listDIDs(args: { alias?: string; provider?: string }): Promise<IIdentifier[]> {
-    throw new Error("not_implemented: listDIDs")
+    throw new Error('not_implemented: listDIDs');
   }
 }

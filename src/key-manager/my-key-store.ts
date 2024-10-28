@@ -1,6 +1,6 @@
-import { IKey, ManagedKeyInfo } from '@veramo/core-types'
-import { AbstractKeyStore, AbstractPrivateKeyStore, ManagedPrivateKey } from '@veramo/key-manager'
-import { ImportablePrivateKey } from '@veramo/key-manager'
+import { IKey, ManagedKeyInfo } from '@veramo/core-types';
+import { AbstractKeyStore, AbstractPrivateKeyStore, ManagedPrivateKey } from '@veramo/key-manager';
+import { ImportablePrivateKey } from '@veramo/key-manager';
 
 /**
  * This type of class would allow you to define your own storage for the key mappings that a Veramo agent manages.
@@ -12,19 +12,19 @@ import { ImportablePrivateKey } from '@veramo/key-manager'
  */
 export class MyKeyStore extends AbstractKeyStore {
   async importKey(args: IKey): Promise<boolean> {
-    throw new Error('not_implemented: MyKeyStore.importKey')
+    throw new Error('not_implemented: MyKeyStore.importKey');
   }
 
   async getKey({ kid }: { kid: string }): Promise<IKey> {
-    throw new Error('not_implemented: MyKeyStore.getKey')
+    throw new Error('not_implemented: MyKeyStore.getKey');
   }
 
   async deleteKey({ kid }: { kid: string }): Promise<boolean> {
-    throw new Error('not_implemented: MyKeyStore.deleteKey')
+    throw new Error('not_implemented: MyKeyStore.deleteKey');
   }
 
   async listKeys(args: {}): Promise<ManagedKeyInfo[]> {
-    throw new Error('not_implemented: MyKeyStore.listKeys')
+    throw new Error('not_implemented: MyKeyStore.listKeys');
   }
 }
 
@@ -39,19 +39,18 @@ export class MyKeyStore extends AbstractKeyStore {
  */
 export class MyPrivateKeyStore extends AbstractPrivateKeyStore {
   importKey(args: ImportablePrivateKey): Promise<ManagedPrivateKey> {
-    throw new Error('not_implemented: MyPrivateKeyStore.importKey')
+    throw new Error('not_implemented: MyPrivateKeyStore.importKey');
   }
 
   getKey(args: { alias: string }): Promise<ManagedPrivateKey> {
-    throw new Error('not_implemented: MyPrivateKeyStore.getKey')
+    throw new Error('not_implemented: MyPrivateKeyStore.getKey');
   }
 
   deleteKey(args: { alias: string }): Promise<boolean> {
-    throw new Error('not_implemented: MyPrivateKeyStore.deleteKey')
+    throw new Error('not_implemented: MyPrivateKeyStore.deleteKey');
   }
 
   listKeys(args: {}): Promise<ManagedPrivateKey[]> {
-    throw new Error('not_implemented: MyPrivateKeyStore.listKeys')
+    throw new Error('not_implemented: MyPrivateKeyStore.listKeys');
   }
-
 }

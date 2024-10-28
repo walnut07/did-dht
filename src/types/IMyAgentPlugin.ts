@@ -1,4 +1,4 @@
-import { IPluginMethodMap, IAgentContext, IDIDManager, IResolver } from '@veramo/core-types'
+import { IPluginMethodMap, IAgentContext, IDIDManager, IResolver } from '@veramo/core-types';
 
 /**
  * My Agent Plugin description.
@@ -29,7 +29,10 @@ export interface IMyAgentPlugin extends IPluginMethodMap {
    *   Declaring a context type here lets other developers know which other plugins
    *   need to also be installed for this method to work.
    */
-  myPluginFoo(args: IMyAgentPluginFooArgs, context: IRequiredContext): Promise<IMyAgentPluginFooResult>
+  myPluginFoo(
+    args: IMyAgentPluginFooArgs,
+    context: IRequiredContext,
+  ): Promise<IMyAgentPluginFooResult>;
 }
 
 /**
@@ -43,17 +46,17 @@ export interface IMyAgentPluginFooArgs {
   /**
    * Decentralized identifier
    */
-  did: string
+  did: string;
 
   /**
    * Lorem ipsum
    */
-  bar: string
+  bar: string;
 
   /**
    * Dolorem
    */
-  foo: string
+  foo: string;
 }
 
 /**
@@ -64,9 +67,9 @@ export interface IMyAgentPluginFooArgs {
  * @beta
  */
 export type IMyAgentPluginFooResult = {
-  foobar?: string
-  baz?: any
-}
+  foobar?: string;
+  baz?: any;
+};
 
 /**
  * This context describes the requirements of this plugin.
@@ -76,4 +79,4 @@ export type IMyAgentPluginFooResult = {
  *
  * @beta
  */
-export type IRequiredContext = IAgentContext<IResolver & IDIDManager>
+export type IRequiredContext = IAgentContext<IResolver & IDIDManager>;

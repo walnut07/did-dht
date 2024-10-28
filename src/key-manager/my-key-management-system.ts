@@ -1,5 +1,5 @@
-import { TKeyType, IKey, ManagedKeyInfo, MinimalImportableKey } from '@veramo/core-types'
-import { AbstractKeyManagementSystem } from '@veramo/key-manager'
+import { TKeyType, IKey, ManagedKeyInfo, MinimalImportableKey } from '@veramo/core-types';
+import { AbstractKeyManagementSystem } from '@veramo/key-manager';
 
 /**
  * You can use this template for an `AbstractKeyManagementSystem` implementation.
@@ -18,8 +18,12 @@ export class MyKeyManagementSystem extends AbstractKeyManagementSystem {
   /**
    * Sign the `data` using the `algorithm` and the key referenced by `keyRef`.
    */
-  async sign(args: { keyRef: Pick<IKey, 'kid'>; algorithm?: string | undefined; data: Uint8Array }): Promise<string> {
-    throw new Error('not_implemented: MyKeyManagementSystem.sign')
+  async sign(args: {
+    keyRef: Pick<IKey, 'kid'>;
+    algorithm?: string | undefined;
+    data: Uint8Array;
+  }): Promise<string> {
+    throw new Error('not_implemented: MyKeyManagementSystem.sign');
   }
 
   /**
@@ -27,8 +31,11 @@ export class MyKeyManagementSystem extends AbstractKeyManagementSystem {
    * `myKeyRef` is used to reference the key managed by this key management system.
    * @param args
    */
-  async sharedSecret(args: { myKeyRef: Pick<IKey, 'kid'>; theirKey: Pick<IKey, 'type' | 'publicKeyHex'> }): Promise<string> {
-    throw new Error('not_implemented: MyKeyManagementSystem.sharedSecret')
+  async sharedSecret(args: {
+    myKeyRef: Pick<IKey, 'kid'>;
+    theirKey: Pick<IKey, 'type' | 'publicKeyHex'>;
+  }): Promise<string> {
+    throw new Error('not_implemented: MyKeyManagementSystem.sharedSecret');
   }
 
   /**
@@ -44,33 +51,33 @@ export class MyKeyManagementSystem extends AbstractKeyManagementSystem {
    * @param args
    */
   async importKey(args: MinimalImportableKey): Promise<ManagedKeyInfo> {
-    throw new Error('not_implemented: MyKeyManagementSystem.importKey')
+    throw new Error('not_implemented: MyKeyManagementSystem.importKey');
   }
 
   async listKeys(): Promise<ManagedKeyInfo[]> {
-    throw new Error('not_implemented: MyKeyManagementSystem.listKeys')
+    throw new Error('not_implemented: MyKeyManagementSystem.listKeys');
   }
 
   async createKey({ type, meta }: { type: TKeyType; meta?: any }): Promise<ManagedKeyInfo> {
-    let key: ManagedKeyInfo
+    let key: ManagedKeyInfo;
 
     switch (type) {
       case 'Ed25519':
-        throw Error('not_implemented: MyKeyManagementSystem createKey Ed25519 not implemented')
-        break
+        throw Error('not_implemented: MyKeyManagementSystem createKey Ed25519 not implemented');
+        break;
       case 'Secp256k1':
-        throw Error('not_implemented: MyKeyManagementSystem createKey Secp256k1 not implemented')
-        break
+        throw Error('not_implemented: MyKeyManagementSystem createKey Secp256k1 not implemented');
+        break;
       case 'X25519':
-        throw Error('not_implemented: MyKeyManagementSystem createKey X25519 not implemented')
-        break
+        throw Error('not_implemented: MyKeyManagementSystem createKey X25519 not implemented');
+        break;
       default:
-        throw Error('not_implemented: Key type not supported by MyKeyManagementSystem: ' + type)
+        throw Error('not_implemented: Key type not supported by MyKeyManagementSystem: ' + type);
     }
-    return key
+    return key;
   }
 
   async deleteKey(args: { kid: string }): Promise<boolean> {
-    throw Error('not_implemented: KeyManagementSystem.deleteKey')
+    throw Error('not_implemented: KeyManagementSystem.deleteKey');
   }
 }

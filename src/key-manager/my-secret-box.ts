@@ -1,4 +1,4 @@
-import { AbstractSecretBox } from '@veramo/key-manager'
+import { AbstractSecretBox } from '@veramo/key-manager';
 
 /**
  * This type of class would allow you to define your own encryption for the key material that a Veramo agent manages.
@@ -11,17 +11,17 @@ import { AbstractSecretBox } from '@veramo/key-manager'
  */
 export class SecretBox extends AbstractSecretBox {
   constructor(private secretKey: string) {
-    super()
+    super();
     if (!secretKey) {
-      throw Error('Secret key is required')
+      throw Error('Secret key is required');
     }
   }
 
   async encrypt(message: string): Promise<string> {
-    throw Error('SecretBox encrypt not implemented')
+    throw Error('SecretBox encrypt not implemented');
   }
 
   async decrypt(encryptedMessageHex: string): Promise<string> {
-    throw Error('SecretBox decrypt not implemented')
+    throw Error('SecretBox decrypt not implemented');
   }
 }
