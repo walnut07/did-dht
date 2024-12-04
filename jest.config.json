@@ -36,6 +36,9 @@
       }
     ]
   },
+  "moduleNameMapper": {
+    "^bittorrent-dht$": "<rootDir>/src/did-manager/__tests__/__mocks__/bittorrent-dht.js"
+  },
   "testEnvironment": "node",
   "automock": false
 }

@@ -8,7 +8,7 @@
   "type": "module",
   "veramo": {
     "pluginInterfaces": {
-      "IMyAgentPlugin": "./src/types/IMyAgentPlugin.ts"
+      "IDIDDHTPlugin": "./src/types/DIDDHTPlugin.ts"
     }
   },
   "scripts": {
@@ -44,6 +44,7 @@
   "dependencies": {
     "@veramo/core-types": "^5.1.2",
     "@veramo/did-manager": "^5.1.2",
-    "@veramo/key-manager": "^5.1.2"
+    "@veramo/key-manager": "^5.1.2",
+    "zbase32": "^2.0.3"
   }
 }
