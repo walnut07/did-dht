@@ -11,7 +11,7 @@ declare module 'bittorrent-dht' {
   export default class DHT extends EventEmitter {
     constructor(options?: DHTOptions);
     listen(port?: number, address?: string, callback?: () => void): void;
-    put(opts: object, callback: (err: Error | null, hash: string) => void): void;
+    put(opts: { v: Buffer }, callback: (err: Error | null, hash: string) => void): void;
     get(hash: string, callback: (err: Error | null, value: Buffer) => void): void;
     destroy(callback?: () => void): void;
   }

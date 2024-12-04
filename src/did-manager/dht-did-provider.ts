@@ -9,6 +9,8 @@ import {
 import { AbstractIdentifierProvider } from '@veramo/did-manager';
 import DHT from 'bittorrent-dht'; // Using bittorrent-dht library
 import Debug from 'debug';
+import { hexToBytes } from '@veramo/utils'; // Use hexToBytes from veramo/utils for encoding
+import * as zbase32 from 'zbase32'; // Import zbase32 for encoding
 
 const debug = Debug('veramo:did-provider-dht');
 
@@ -46,33 +48,42 @@ export class DHTDIDProvider extends AbstractIdentifierProvider {
       throw new Error(`invalid_network: No configuration found for network ${networkSpecifier}`);
     }
 
+    // Create a new Ed25519 key for the DID
     const key = await context.agent.keyManagerCreate({
       kms: kms || this.defaultKms,
       type: 'Ed25519',
     });
-    const did = `did:dht:${network.networkName}:${key.publicKeyHex}`;
 
-    // Ed25519 keys are required by DHT & DID DHT:https://did-dht.com/#identity-key-pair.
-    const didDocument = {
-      '@context': 'https://w3id.org/did/v1',
-      id: did,
-      publicKey: [
-        {
-          id: `${did}#keys-1`,
-          type: 'Ed25519VerificationKey2018',
-          controller: did,
-          publicKeyHex: key.publicKeyHex,
-        },
-      ],
-      authentication: [
-        {
-          type: 'Ed25519SignatureAuthentication',
-          publicKey: `${did}#keys-1`,
-        },
-      ],
-    };
+    // Encode the public key in z-base-32 format as required by DID DHT
+    const publicKeyBytes = hexToBytes(key.publicKeyHex);
+    const zBase32PublicKey = zbase32.encode(publicKeyBytes);
+    const did = `did:dht:${zBase32PublicKey}`;
 
-    const value = Buffer.from(JSON.stringify(didDocument));
+    // Define DNS Records
+    // TODO: Create a helper function to construct DNS records for readability
+    const rootRecordName = `_did.${zBase32PublicKey}.`;
+    const dnsRecords = [
+      {
+        type: 'TXT',
+        name: rootRecordName,
+        ttl: 7200,
+        rdata: `v=0;vm=k0;auth=k0;`, // Root record specifying version and verification method
+      },
+      {
+        type: 'TXT',
+        name: `_k0._did.${zBase32PublicKey}.`,
+        ttl: 7200,
+        rdata: `id=0;t=0;k=${key.publicKeyHex}`, // Verification method record for Identity Key
+      },
+    ];
+
+    // Convert DNS packet into a Buffer for storage in DHT
+    const value = Buffer.concat(
+      dnsRecords.map((record) =>
+        Buffer.from(`${record.name} ${record.type} ${record.ttl} ${record.rdata}`, 'utf-8'),
+      ),
+    );
+
     // Create a promise for async programming because `put` in `bittorrent-dht` does not return a promise.
     await new Promise<void>((resolve, reject) => {
       network.dhtInstance.put({ v: value }, (err, hash) => {
@@ -90,7 +101,7 @@ export class DHTDIDProvider extends AbstractIdentifierProvider {
       did,
       controllerKeyId: key.kid,
       keys: [key],
-      services: [],
+      services: [], // TODO: Add services if any are provided in the options
     };
   }
 

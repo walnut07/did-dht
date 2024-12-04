@@ -6930,3 +6930,8 @@ z-schema@~5.0.2:
     validator "^13.7.0"
   optionalDependencies:
     commander "^10.0.0"
+
+zbase32@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/zbase32/-/zbase32-2.0.3.tgz#849977a95132480c5dab6d4bb7c531f5d6d6278d"
+  integrity sha512-kKUdsuuZhhitTjF0Ou1evShpFoCK/7INWpjTR+CX99HKXqq1zVA2GBMSwJETJlSwM6dgbI//J60m5SydyWj/KQ==

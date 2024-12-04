@@ -22,7 +22,7 @@ export default (testContext: {
     });
   
     describe('createDHTIdentifier', () => {
-      it('should create a new DID identifier using DHT', async () => {
+      it('should create a new DID identifier', async () => {
         const identifier = await agent.didManagerCreate({
           provider: 'did:dht',
           options: { networkName: 'example-network' },
@@ -30,8 +30,8 @@ export default (testContext: {
         });
 
         expect(identifier).toBeDefined();
-        expect(identifier.provider).toEqual('did:dht')
-        expect(identifier.did).toMatch(/^did:dht:example-network:/);
+        expect(identifier.provider).toEqual('did:dht');
+        expect(identifier.did).toMatch(/^did:dht:[a-km-uw-z13-9]+$/);
         expect(identifier.controllerKeyId).toBeDefined();
         expect(identifier.keys).toHaveLength(1);
       });
@@ -43,7 +43,7 @@ export default (testContext: {
             options: { networkName: 'invalid-network' },
           })
         ).rejects.toThrow('invalid_network: No configuration found for network invalid-network');
-      });      
+      });
     });
   });
 };
